@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -10,6 +11,9 @@ import (
 
 func main() {
 	e := echo.New()
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
@@ -23,5 +27,10 @@ func main() {
 	g := e.Group("/term-sheet")
 	g.POST("/calculate", services.CalculateTs)
 
-	e.Logger.Fatal(e.Start(":3001"))
+	httpPort := os.Getenv("PORT")
+	if httpPort == "" {
+		httpPort = "3001"
+	}
+
+	e.Logger.Fatal(e.Start(":" + httpPort))
 }
