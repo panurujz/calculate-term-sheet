@@ -21,7 +21,7 @@ func main() {
 	}))
 
 	e.GET("/health", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Server is smooth.")
+		return c.String(http.StatusOK, "Server is very smooth.")
 	})
 
 	g := e.Group("/term-sheet")
